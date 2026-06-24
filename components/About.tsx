@@ -71,7 +71,7 @@ export default function About() {
               alt="Portrait of Nicole Wang"
               fill
               sizes="(max-width: 768px) 80vw, 40vw"
-              style={{ objectFit: "cover", objectPosition: "50% 22%" }}
+              style={{ objectFit: "cover", objectPosition: "50% 38%" }}
             />
             {/* Pressed flower sticker */}
             <div

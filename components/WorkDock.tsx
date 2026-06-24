@@ -9,7 +9,7 @@ import CodeCloud, { type CodeCloudPalette } from "./CodeCloud";
 
 // Slugs whose dock card uses a dark/photo background, so the label needs
 // light text instead of the default dark text.
-const DARK_CARD_SLUGS = ["kali", "avicii", "bloomtasks"];
+const DARK_CARD_SLUGS = ["kali", "avicii", "bloomtasks", "arbiter"];
 
 // Subset of DARK_CARD_SLUGS that also gets the orbiting code-glyph halo.
 const HALO_SLUGS = ["kali", "avicii", "bloomtasks"];

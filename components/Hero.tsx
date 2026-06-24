@@ -186,14 +186,21 @@ export default function Hero() {
             className="leading-none tracking-tight"
             style={{
               fontFamily: "var(--font-fraunces)",
-              fontSize: "clamp(56px, 9vw, 132px)",
+              fontSize: "clamp(60px, 9.8vw, 144px)",
               letterSpacing: "-2px",
               lineHeight: 0.92,
             }}
           >
             Nicole
             <br />
-            <span style={{ fontStyle: "italic", fontWeight: 400, color: "#7E8A6E" }}>
+            <span
+              style={{
+                fontStyle: "italic",
+                fontWeight: 400,
+                color: "#7E8A6E",
+                marginLeft: "0.18em",
+              }}
+            >
               Wang
             </span>
           </h1>
