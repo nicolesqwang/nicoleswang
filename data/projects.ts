@@ -35,14 +35,15 @@ export const PROJECTS: Project[] = [
   {
     slug: "nasa",
     num: "01",
-    title: "NASA: AI Engineering",
-    shortTitle: "NASA AI Engineering",
-    role: "AI Engineering Intern",
+    title: "Project TBD",
+    shortTitle: "Project TBD",
+    role: "Coming soon",
     year: "2026",
+    comingSoon: true,
     thumbBg: "linear-gradient(160deg,#D9E4E0,#CBDDDF)",
     accent: "#CBDDDF",
     oneLiner:
-      "A vetted prompt-engineering DB + RAG pipelines for the Astrophysics Division.",
+      "Details coming soon.",
     overview:
       "Inside NASA's Astrophysics Division I built internal AI tooling to make scientists faster and more consistent, turning scattered prompt knowledge into a single trusted system and making dense documents instantly queryable.",
     goals: [
@@ -125,13 +126,14 @@ export const PROJECTS: Project[] = [
   {
     slug: "haas",
     num: "03",
-    title: "UC Berkeley Haas: Research",
-    shortTitle: "Haas Research",
-    role: "Research Assistant",
+    title: "Project TBD",
+    shortTitle: "Project TBD",
+    role: "Coming soon",
     year: "2026",
+    comingSoon: true,
     thumbBg: "linear-gradient(160deg,#F1F0C8,#ECE9BE)",
     accent: "#ECE9BE",
-    oneLiner: "Rebuilt Econ4UA.org and deployed online RCTs for Prof. Fedyk.",
+    oneLiner: "Details coming soon.",
     overview:
       "Supporting Professor Fedyk's research, I bridged web development and behavioral economics, rebuilding a public-facing education site and standing up the infrastructure for live online experiments.",
     goals: [

@@ -3,16 +3,22 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { fadeUp } from "./animations";
-import { HOBBIES } from "@/data/hobbies";
+import { HOBBIES, type Hobby } from "@/data/hobbies";
 import { GridTexture, DotTexture, RingAccent } from "./patterns";
 import { FlowerDoodle, SeedlingDoodle } from "./Doodles";
 
 const ROTATIONS = [-3, 2, -2, 3, -1.5, 2.5, -2.5, 1.5];
 
-function PlaceholderPhoto({ accent }: { accent: string }) {
+function PlaceholderPhoto({
+  accent,
+  className,
+}: {
+  accent: string;
+  className?: string;
+}) {
   return (
     <div
-      className="relative aspect-[4/3] w-full"
+      className={`relative ${className ?? ""}`}
       style={{
         background: `repeating-linear-gradient(45deg, rgba(255,255,255,0.55) 0 9px, transparent 9px 18px), ${accent}`,
       }}
@@ -27,8 +33,38 @@ function PlaceholderPhoto({ accent }: { accent: string }) {
   );
 }
 
+function PhotoStrip({ hobby }: { hobby: Hobby }) {
+  const isHorizontal = hobby.layout === "horizontal";
+  return (
+    <div
+      className="w-full overflow-hidden rounded-[7px] border-[3px]"
+      style={{
+        borderColor: "#fff",
+        background: hobby.bg,
+        boxShadow: "0 14px 26px -16px rgba(60,70,58,0.45)",
+      }}
+    >
+      {isHorizontal ? (
+        <div className="flex h-[110px]">
+          <PlaceholderPhoto accent={hobby.accent} className="h-full w-1/2" />
+          <div style={{ width: 3, background: "#fff" }} />
+          <PlaceholderPhoto accent={hobby.accent} className="h-full w-1/2" />
+        </div>
+      ) : (
+        <div className="flex flex-col" style={{ height: hobby.tall ? 260 : 210 }}>
+          <PlaceholderPhoto accent={hobby.accent} className="w-full flex-1" />
+          <div style={{ height: 3, background: "#fff" }} />
+          <PlaceholderPhoto accent={hobby.accent} className="w-full flex-1" />
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function Hobbies() {
+  const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
+  const hovered = HOBBIES.find((h) => h.slug === hoveredSlug) ?? null;
   const active = HOBBIES.find((h) => h.slug === openSlug) ?? null;
 
   useEffect(() => {
@@ -102,60 +138,92 @@ export default function Hobbies() {
           <span style={{ fontStyle: "italic", color: "#E3AEB8" }}>love.</span>
         </h2>
         <p className="text-base leading-relaxed" style={{ color: "#6B7363" }}>
-          Hover (or tap) a strip to peek inside.
+          Hover a strip for a peek, click for the full story.
         </p>
       </motion.div>
 
       <motion.div
-        className="relative mx-auto grid max-w-[1080px] grid-cols-2 gap-x-6 gap-y-14 sm:grid-cols-3 lg:grid-cols-4"
+        className="relative mx-auto grid max-w-[1080px] grid-cols-2 gap-x-6 gap-y-16 sm:grid-cols-4"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
         variants={fadeUp}
+        style={{ alignItems: "end" }}
       >
-        {HOBBIES.map((h, i) => (
-          <motion.button
-            key={h.slug}
-            type="button"
-            onClick={() => setOpenSlug(h.slug)}
-            onMouseEnter={() => setOpenSlug(h.slug)}
-            className="group mx-auto flex w-full max-w-[150px] flex-col items-center focus:outline-none"
-            initial={{ rotate: ROTATIONS[i % ROTATIONS.length] }}
-            whileHover={{ rotate: 0, scale: 1.06, y: -4 }}
-            transition={{ type: "spring", stiffness: 260, damping: 18 }}
-            aria-label={`View ${h.title}`}
-          >
+        {HOBBIES.map((h, i) => {
+          const isHorizontal = h.layout === "horizontal";
+          return (
             <div
-              className="overflow-hidden rounded-[7px] border-[3px]"
-              style={{
-                borderColor: "#fff",
-                background: h.bg,
-                boxShadow: "0 14px 26px -16px rgba(60,70,58,0.45)",
-              }}
+              key={h.slug}
+              className={`relative ${isHorizontal ? "col-span-2" : ""}`}
+              style={{ zIndex: hoveredSlug === h.slug ? 30 : 1 }}
+              onMouseEnter={() => setHoveredSlug(h.slug)}
+              onMouseLeave={() => setHoveredSlug(null)}
             >
-              <PlaceholderPhoto accent={h.accent} />
-              <div style={{ height: 3, background: "#fff" }} />
-              <PlaceholderPhoto accent={h.accent} />
-            </div>
-            <div className="mt-3 text-center">
-              <div
-                className="text-sm font-semibold leading-tight"
-                style={{ fontFamily: "var(--font-fraunces)", color: "#2E372C" }}
+              <motion.button
+                type="button"
+                onClick={() => setOpenSlug(h.slug)}
+                className={`group mx-auto flex flex-col items-center focus:outline-none ${
+                  isHorizontal ? "w-full max-w-[260px]" : "w-full max-w-[140px]"
+                }`}
+                initial={{ rotate: ROTATIONS[i % ROTATIONS.length] }}
+                whileHover={{ rotate: 0, scale: 1.05, y: -4 }}
+                transition={{ type: "spring", stiffness: 260, damping: 18 }}
+                aria-label={`View ${h.title}`}
               >
-                {h.title}
-              </div>
-              <div
-                className="mt-0.5 text-[10.5px] opacity-0 transition-opacity group-hover:opacity-70"
-                style={{ color: "#6B7363" }}
-              >
-                peek inside →
-              </div>
+                <PhotoStrip hobby={h} />
+                <div className="mt-3 text-center">
+                  <div
+                    className="text-sm font-semibold leading-tight"
+                    style={{ fontFamily: "var(--font-fraunces)", color: "#2E372C" }}
+                  >
+                    {h.title}
+                  </div>
+                  <div
+                    className="mt-0.5 text-[10.5px] opacity-0 transition-opacity group-hover:opacity-70"
+                    style={{ color: "#6B7363" }}
+                  >
+                    click for more →
+                  </div>
+                </div>
+              </motion.button>
+
+              {/* Hover mini preview */}
+              <AnimatePresence>
+                {hovered?.slug === h.slug && openSlug !== h.slug && (
+                  <motion.div
+                    className="absolute left-1/2 top-full z-30 mt-2 w-56 -translate-x-1/2 rounded-[14px] p-4 text-left"
+                    style={{
+                      background: h.bg,
+                      border: "1px solid rgba(60,70,58,0.14)",
+                      boxShadow: "0 22px 40px -20px rgba(60,70,58,0.45)",
+                    }}
+                    initial={{ opacity: 0, y: -6, scale: 0.96 }}
+                    animate={{ opacity: 1, y: 0, scale: 1 }}
+                    exit={{ opacity: 0, y: -6, scale: 0.96 }}
+                    transition={{ duration: 0.15 }}
+                  >
+                    <div
+                      className="text-xs font-semibold"
+                      style={{ fontFamily: "var(--font-fraunces)", color: "#2E372C" }}
+                    >
+                      {h.title} · {h.since}
+                    </div>
+                    <p
+                      className="mt-1.5 text-xs leading-relaxed"
+                      style={{ color: "#3C463A" }}
+                    >
+                      {h.blurb.length > 100 ? `${h.blurb.slice(0, 100)}…` : h.blurb}
+                    </p>
+                  </motion.div>
+                )}
+              </AnimatePresence>
             </div>
-          </motion.button>
-        ))}
+          );
+        })}
       </motion.div>
 
-      {/* Popup */}
+      {/* Full popup */}
       <AnimatePresence>
         {active && (
           <motion.div
