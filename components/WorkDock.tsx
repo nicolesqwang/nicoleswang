@@ -136,6 +136,14 @@ function CardShell({
   );
 }
 
+// Soft colored glow behind halo cards, tuned to each project's own palette
+// (falls back to Kali's pink glow if a slug has no explicit override).
+function getCardShadow(slug: string, baseShadow: string): string {
+  if (!HALO_SLUGS.includes(slug)) return baseShadow;
+  const glow = HALO_PALETTES[slug]?.glow ?? "rgba(227,174,184,0.32)";
+  return `${baseShadow}, 0 0 36px 8px ${glow}`;
+}
+
 function getScale(hoveredIdx: number | null, thisIdx: number): number {
   if (hoveredIdx === null) return 1;
   const d = Math.abs(thisIdx - hoveredIdx);
@@ -269,7 +277,7 @@ export default function WorkDock() {
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
                   border: "1px solid rgba(60,70,58,0.14)",
-                  boxShadow: "0 16px 30px -22px rgba(60,70,58,0.5)",
+                  boxShadow: getCardShadow(p.slug, "0 16px 30px -22px rgba(60,70,58,0.5)"),
                 }}
               >
                 {HALO_SLUGS.includes(p.slug) ? (
@@ -368,7 +376,7 @@ export default function WorkDock() {
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",
                 border: "1px solid rgba(60,70,58,0.14)",
-                boxShadow: "0 10px 20px -14px rgba(60,70,58,0.4)",
+                boxShadow: getCardShadow(p.slug, "0 10px 20px -14px rgba(60,70,58,0.4)"),
               }}
             >
               {HALO_SLUGS.includes(p.slug) ? (

@@ -16,13 +16,13 @@ const hanken = Hanken_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Nicole Wang: Data Science & Economics @ Berkeley",
+  title: "Nicole Wang: Data Science & Economics @ UC Berkeley",
   description:
     "Personal portfolio of Nicole Wang, blending data, design, and storytelling across AI engineering, strategy, and research.",
   openGraph: {
     title: "Nicole Wang: Portfolio",
     description:
-      "Data Science & Economics @ Berkeley, AI engineering, strategy consulting, research.",
+      "Data Science & Economics @ UC Berkeley, AI engineering, strategy consulting, research.",
     type: "website",
   },
 };

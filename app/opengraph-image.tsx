@@ -71,7 +71,7 @@ export default function Image() {
             maxWidth: 820,
           }}
         >
-          Data Science &amp; Economics @ Berkeley: AI engineering, strategy,
+          Data Science &amp; Economics @ UC Berkeley: AI engineering, strategy,
           and research.
         </div>
       </div>

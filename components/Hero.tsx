@@ -208,7 +208,7 @@ export default function Hero() {
             }}
           >
             Data Science &amp; Economics{" "}
-            <strong style={{ color: "#3C463A" }}>@ Berkeley</strong>, blending
+            <strong style={{ color: "#3C463A" }}>@ UC Berkeley</strong>, blending
             data, design, and storytelling across AI engineering, strategy, and
             research.
           </p>
@@ -254,7 +254,7 @@ export default function Hero() {
             id="hero-phone-slot"
             className="relative md:opacity-0 md:pointer-events-none"
           >
-            <Phone width={290} />
+            <Phone width={316} />
             <span
               className="absolute -top-3 -right-2 text-2xl animate-twinkle"
               style={{ color: "#E3AEB8", animationDelay: "0.4s" }}

@@ -52,9 +52,10 @@ export async function POST(req: NextRequest) {
 
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey || apiKey === "re_your_key_here") {
-    // Dev mode: log and return success so the form works without a key locally
-    console.log("[contact form] RESEND_API_KEY not set — logging message instead:", { name, email, message });
-    return NextResponse.json({ ok: true });
+    // No real key configured: tell the client so it can fall back to a
+    // mailto link instead of silently pretending the email was sent.
+    console.log("[contact form] RESEND_API_KEY not set, logging message instead:", { name, email, message });
+    return NextResponse.json({ ok: true, delivered: false });
   }
 
   const resend = new Resend(apiKey);
@@ -70,8 +71,8 @@ export async function POST(req: NextRequest) {
 
   if (error) {
     console.error("[contact form] Resend error:", error);
-    return NextResponse.json({ error: "Failed to send. Please email me directly." }, { status: 500 });
+    return NextResponse.json({ ok: true, delivered: false });
   }
 
-  return NextResponse.json({ ok: true });
+  return NextResponse.json({ ok: true, delivered: true });
 }

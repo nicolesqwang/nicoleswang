@@ -5,11 +5,20 @@ import { motion } from "framer-motion";
 import { fadeUp } from "./animations";
 import { FernDoodle, FlowerDoodle, SeedlingDoodle, SucculentDoodle } from "./Doodles";
 
-type FormState = "idle" | "loading" | "success" | "error";
+type FormState = "idle" | "loading" | "success" | "mailto";
+
+const CONTACT_EMAIL = "nicoleswang@berkeley.edu";
+
+// Opens the visitor's own mail client with the message pre-filled, so it
+// reaches my inbox even when the backend can't deliver it directly.
+function openMailtoFallback(name: string, email: string, message: string) {
+  const subject = `Portfolio message from ${name}`;
+  const body = `${message}\n\nFrom ${name} (${email})`;
+  window.location.href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+}
 
 export default function ContactForm() {
   const [state, setState] = useState<FormState>("idle");
-  const [errorMsg, setErrorMsg] = useState("");
   const honeypotRef = useRef<HTMLInputElement>(null);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -31,14 +40,21 @@ export default function ContactForm() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, email, message }),
       });
+      const data = await res.json().catch(() => ({}));
       if (!res.ok) {
-        const data = await res.json().catch(() => ({}));
         throw new Error(data.error || "Something went wrong");
       }
-      setState("success");
-    } catch (err) {
-      setErrorMsg(err instanceof Error ? err.message : "Something went wrong");
-      setState("error");
+      if (data.delivered) {
+        setState("success");
+      } else {
+        openMailtoFallback(name, email, message);
+        setState("mailto");
+      }
+    } catch {
+      // Even on a network/server failure, guarantee the message still
+      // reaches me by handing it off to the visitor's own mail client.
+      openMailtoFallback(name, email, message);
+      setState("mailto");
     }
   }
 
@@ -128,7 +144,7 @@ export default function ContactForm() {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeUp}
         >
-          {state === "success" ? (
+          {state === "success" || state === "mailto" ? (
             <div
               className="rounded-[20px] px-8 py-12 text-center"
               style={{
@@ -144,10 +160,12 @@ export default function ContactForm() {
                 className="mt-4 mb-2 text-2xl font-semibold"
                 style={{ fontFamily: "var(--font-fraunces)" }}
               >
-                Message planted!
+                {state === "success" ? "Message planted!" : "Almost there!"}
               </h3>
               <p className="text-sm" style={{ color: "#6B7363" }}>
-                Thanks for reaching out, I&apos;ll get back to you soon.
+                {state === "success"
+                  ? "Thanks for reaching out, I'll get back to you soon."
+                  : "I opened your email app with the message ready to go, just hit send and it'll land in my inbox."}
               </p>
             </div>
           ) : (
@@ -222,10 +240,6 @@ export default function ContactForm() {
                   }}
                 />
               </label>
-
-              {state === "error" && (
-                <p className="text-xs text-red-600">{errorMsg || "Something went wrong. Please try again."}</p>
-              )}
 
               <button
                 type="submit"
