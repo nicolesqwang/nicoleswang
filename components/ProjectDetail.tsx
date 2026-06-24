@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import type { Project } from "@/data/projects";
 import { fadeUp } from "./animations";
+import Logo from "./Logo";
 
 export default function ProjectDetail({ project: p }: { project: Project }) {
   return (
@@ -24,12 +25,7 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
         >
           ← Back to work
         </Link>
-        <span
-          className="text-lg font-semibold"
-          style={{ fontFamily: "var(--font-fraunces)" }}
-        >
-          Nicole&nbsp;Wang<span style={{ color: "#E3AEB8" }}>.</span>
-        </span>
+        <Logo size={26} />
       </nav>
 
       {/* Hero header */}

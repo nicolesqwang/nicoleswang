@@ -69,8 +69,8 @@ const HALO_PALETTES: Record<string, CodeCloudPalette> = {
         radius: 46,
         duration: 14,
         glyphs: [
-          { glyph: "brace", angle: 20, size: 16, color: "#8FC4E8" },
-          { glyph: "dot", angle: 160, size: 16, color: "#C9D6F5" },
+          { glyph: "brace", angle: 20, size: 16, color: "#C961D9" },
+          { glyph: "dot", angle: 160, size: 16, color: "#5EEAC4" },
           { glyph: "slash", angle: 280, size: 14, color: "#6F8FE0" },
         ],
       },
@@ -79,9 +79,9 @@ const HALO_PALETTES: Record<string, CodeCloudPalette> = {
         duration: 22,
         reverse: true,
         glyphs: [
-          { glyph: "angle", angle: 60, size: 18, color: "#6F8FE0" },
-          { glyph: "bracket", angle: 190, size: 16, color: "#8FC4E8" },
-          { glyph: "dot", angle: 320, size: 14, color: "#C9D6F5" },
+          { glyph: "angle", angle: 60, size: 18, color: "#5EEAC4" },
+          { glyph: "bracket", angle: 190, size: 16, color: "#C961D9" },
+          { glyph: "dot", angle: 320, size: 14, color: "#8FC4E8" },
         ],
       },
     ],
@@ -264,7 +264,7 @@ export default function WorkDock() {
                 className="relative overflow-hidden rounded-[14px]"
                 style={{
                   aspectRatio: "4/5",
-                  background: p.thumbBg,
+                  backgroundImage: p.thumbBg,
                   backgroundSize: "cover",
                   backgroundPosition: "center",
                   backgroundRepeat: "no-repeat",
@@ -363,7 +363,7 @@ export default function WorkDock() {
               className="relative overflow-hidden rounded-[14px] active:opacity-80 transition-opacity"
               style={{
                 aspectRatio: "4/5",
-                background: p.thumbBg,
+                backgroundImage: p.thumbBg,
                 backgroundSize: "cover",
                 backgroundPosition: "center",
                 backgroundRepeat: "no-repeat",

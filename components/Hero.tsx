@@ -5,6 +5,7 @@ import { motion, useScroll, useTransform } from "framer-motion";
 import Phone from "./Phone";
 import ScrollMorphPhone from "./ScrollMorphPhone";
 import { SeedlingDoodle } from "./Doodles";
+import Logo from "./Logo";
 import { getNextSeasonLabel } from "@/lib/season";
 
 export default function Hero() {
@@ -126,13 +127,7 @@ export default function Hero() {
 
       {/* Nav */}
       <nav className="relative z-20 flex items-center justify-between px-6 py-7 sm:px-16 sm:py-8">
-        <span
-          className="text-xl font-semibold tracking-wide"
-          style={{ fontFamily: "var(--font-fraunces)" }}
-        >
-          Nicole&nbsp;Wang
-          <span style={{ color: "#E3AEB8" }}>.</span>
-        </span>
+        <Logo size={30} />
         <div className="flex items-center gap-6 text-sm font-medium">
           <button
             onClick={() => scrollToSection("about")}

@@ -277,13 +277,20 @@ export const PROJECTS: Project[] = [
     shortTitle: "Avicii: AI DJ Engine",
     role: "UI/UX Designer & Engineer",
     year: "2025",
-    thumbBg: "linear-gradient(155deg,#1B1438 0%,#3B2E72 55%,#5B4FA8 100%)",
+    thumbBg:
+      "linear-gradient(180deg, rgba(27,20,56,0.08) 0%, rgba(27,20,56,0.58) 100%), url('/work/avicii/hero.jpg')",
     accent: "#8AA9E8",
     industry: "Audio AI · Creative Systems",
     award: "Cal Hacks 2025 Project",
     externalUrl: "https://avicii-2tfh.onrender.com",
+    gallery: [
+      "/work/avicii/hero.jpg",
+      "/work/avicii/library.jpg",
+      "/work/avicii/processing.jpg",
+      "/work/avicii/player.jpg",
+    ],
     oneLiner:
-      "An AI-powered DJ system that analyzes music structure, energy, and compatibility to automatically generate seamless, professional-grade mixes, no DJ equipment or training required.",
+      "An AI DJ engine that analyzes your music and automatically mixes a seamless, professional-grade set.",
     overview:
       "Avicii is an AI DJ engine that turns any playlist into a fully automated, professionally mixed DJ set. Instead of relying on expensive hardware or manual beatmatching skills, Avicii analyzes the structure of songs, including BPM, key, energy curves, vocal presence, and rhythmic patterns, and intelligently generates smooth transitions between tracks. The system uses audio separation (stems), music feature extraction, and transformer-based audio understanding (CLAP model) to determine which songs are compatible and exactly where transitions should occur, outputting a continuous mixed audio file with optimized crossfades, beat-aligned transitions, and energy-aware sequencing.",
     goals: [
