@@ -8,8 +8,12 @@ import { SeedlingDoodle, VineDoodle } from "./Doodles";
 import CodeCloud, { type CodeCloudPalette } from "./CodeCloud";
 
 // Slugs whose dock card uses a dark/photo background, so the label needs
-// light text and a halo overlay instead of the default dot texture.
-const DARK_CARD_SLUGS = ["kali", "avicii"];
+// light text instead of the default dark text.
+const DARK_CARD_SLUGS = ["kali", "avicii", "bloomtasks"];
+
+// Subset of DARK_CARD_SLUGS that also gets the orbiting code-glyph halo
+// (bloomtasks just uses its own screenshot + overlay, no halo).
+const HALO_SLUGS = ["kali", "avicii"];
 
 // Halo colors tuned to each dark card's own cover/background palette.
 const HALO_PALETTES: Record<string, CodeCloudPalette> = {
@@ -183,14 +187,14 @@ export default function WorkDock() {
                   boxShadow: "0 16px 30px -22px rgba(60,70,58,0.5)",
                 }}
               >
-                {DARK_CARD_SLUGS.includes(p.slug) ? (
+                {HALO_SLUGS.includes(p.slug) ? (
                   <CodeCloud
                     size={150}
                     withBackground={false}
                     className="pointer-events-none absolute -top-6 -right-10 opacity-90"
                     palette={HALO_PALETTES[p.slug]}
                   />
-                ) : (
+                ) : !DARK_CARD_SLUGS.includes(p.slug) ? (
                   /* Dot texture */
                   <div
                     className="pointer-events-none absolute inset-0 opacity-50"
@@ -200,7 +204,7 @@ export default function WorkDock() {
                       backgroundSize: "14px 14px",
                     }}
                   />
-                )}
+                ) : null}
                 {/* Bottom label */}
                 <div className="absolute bottom-3 left-3 right-3">
                   <div
@@ -277,14 +281,14 @@ export default function WorkDock() {
                 boxShadow: "0 10px 20px -14px rgba(60,70,58,0.4)",
               }}
             >
-              {DARK_CARD_SLUGS.includes(p.slug) ? (
+              {HALO_SLUGS.includes(p.slug) ? (
                 <CodeCloud
                   size={130}
                   withBackground={false}
                   className="pointer-events-none absolute -top-6 -right-10 opacity-90"
                   palette={HALO_PALETTES[p.slug]}
                 />
-              ) : (
+              ) : !DARK_CARD_SLUGS.includes(p.slug) ? (
                 <div
                   className="pointer-events-none absolute inset-0 opacity-50"
                   style={{
@@ -293,7 +297,7 @@ export default function WorkDock() {
                     backgroundSize: "14px 14px",
                   }}
                 />
-              )}
+              ) : null}
               <div className="absolute bottom-3 left-3 right-3">
                 <div
                   className="text-sm font-semibold leading-tight"

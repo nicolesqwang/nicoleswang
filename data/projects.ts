@@ -130,9 +130,16 @@ export const PROJECTS: Project[] = [
     shortTitle: "Bloomtasks",
     role: "Solo Full-Stack Engineer",
     year: "2026",
-    thumbBg: "linear-gradient(160deg,#EDE6F7,#D9CFEF)",
+    thumbBg:
+      "linear-gradient(180deg, rgba(45,30,58,0.1) 0%, rgba(45,30,58,0.62) 100%), url('/work/bloomtasks/hero.jpg')",
     accent: "#D9CFEF",
     externalUrl: "https://bloomtasks.vercel.app",
+    gallery: [
+      "/work/bloomtasks/hero.jpg",
+      "/work/bloomtasks/calendar.jpg",
+      "/work/bloomtasks/tasks.jpg",
+      "/work/bloomtasks/daily-tasks.jpg",
+    ],
     oneLiner:
       "A full-stack personal productivity app with AI-powered scheduling, built for students who have a lot going on.",
     overview:
