@@ -49,16 +49,10 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
         />
         <div className="relative mx-auto max-w-[1080px]">
           <div
-            className="flex items-center gap-3 font-mono text-xs uppercase tracking-[2px]"
+            className="font-mono text-xs uppercase tracking-[2px]"
             style={{ color: "#5C6555" }}
           >
-            <span
-              className="text-xl"
-              style={{ fontFamily: "var(--font-fraunces)", letterSpacing: 0, color: "#3C463A" }}
-            >
-              {p.num}
-            </span>
-            · {p.year}
+            {p.year}
           </div>
           <h1
             className="mt-4 leading-none tracking-tight"

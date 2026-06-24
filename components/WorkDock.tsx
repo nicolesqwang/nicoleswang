@@ -5,7 +5,50 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import { PROJECTS } from "@/data/projects";
 import { SeedlingDoodle, VineDoodle } from "./Doodles";
-import CodeCloud from "./CodeCloud";
+import CodeCloud, { type CodeCloudPalette } from "./CodeCloud";
+
+// Slugs whose dock card uses a dark/photo background, so the label needs
+// light text and a halo overlay instead of the default dot texture.
+const DARK_CARD_SLUGS = ["kali", "avicii"];
+
+// Halo colors tuned to each dark card's own cover/background palette.
+const HALO_PALETTES: Record<string, CodeCloudPalette> = {
+  avicii: {
+    ink: "#1B1438",
+    inkSoft: "#3B2E72",
+    glow: "rgba(138,169,232,0.32)",
+    orbitColor: "rgba(143,196,232,0.34)",
+    snippets: [
+      { text: "bpm: 128", top: "14%", left: "10%", rotate: -6, size: 9 },
+      { text: "librosa.beat", top: "26%", left: "56%", rotate: 4, size: 8.5 },
+      { text: "crossfade()", top: "48%", left: "6%", rotate: -3, size: 8 },
+      { text: "key: A min", top: "64%", left: "26%", rotate: 5, size: 7.5 },
+      { text: "~ ~ ~", top: "74%", left: "66%", rotate: -8, size: 11 },
+      { text: "demucs.separate", top: "6%", left: "44%", rotate: 3, size: 7.5 },
+    ],
+    rings: [
+      {
+        radius: 46,
+        duration: 14,
+        glyphs: [
+          { glyph: "brace", angle: 20, size: 16, color: "#8FC4E8" },
+          { glyph: "dot", angle: 160, size: 16, color: "#C9D6F5" },
+          { glyph: "slash", angle: 280, size: 14, color: "#6F8FE0" },
+        ],
+      },
+      {
+        radius: 78,
+        duration: 22,
+        reverse: true,
+        glyphs: [
+          { glyph: "angle", angle: 60, size: 18, color: "#6F8FE0" },
+          { glyph: "bracket", angle: 190, size: 16, color: "#8FC4E8" },
+          { glyph: "dot", angle: 320, size: 14, color: "#C9D6F5" },
+        ],
+      },
+    ],
+  },
+};
 
 function getScale(hoveredIdx: number | null, thisIdx: number): number {
   if (hoveredIdx === null) return 1;
@@ -140,11 +183,12 @@ export default function WorkDock() {
                   boxShadow: "0 16px 30px -22px rgba(60,70,58,0.5)",
                 }}
               >
-                {p.slug === "kali" ? (
+                {DARK_CARD_SLUGS.includes(p.slug) ? (
                   <CodeCloud
                     size={150}
                     withBackground={false}
                     className="pointer-events-none absolute -top-6 -right-10 opacity-90"
+                    palette={HALO_PALETTES[p.slug]}
                   />
                 ) : (
                   /* Dot texture */
@@ -163,14 +207,14 @@ export default function WorkDock() {
                     className="text-sm font-semibold leading-tight"
                     style={{
                       fontFamily: "var(--font-fraunces)",
-                      color: p.slug === "kali" ? "#E9ECCF" : "#2E372C",
+                      color: DARK_CARD_SLUGS.includes(p.slug) ? "#E9ECCF" : "#2E372C",
                     }}
                   >
                     {p.shortTitle}
                   </div>
                   <div
                     className="mt-0.5 text-[11px]"
-                    style={{ color: p.slug === "kali" ? "#A9B49C" : "#5C6555" }}
+                    style={{ color: DARK_CARD_SLUGS.includes(p.slug) ? "#A9B49C" : "#5C6555" }}
                   >
                     {p.role}
                   </div>
@@ -233,11 +277,12 @@ export default function WorkDock() {
                 boxShadow: "0 10px 20px -14px rgba(60,70,58,0.4)",
               }}
             >
-              {p.slug === "kali" ? (
+              {DARK_CARD_SLUGS.includes(p.slug) ? (
                 <CodeCloud
                   size={130}
                   withBackground={false}
                   className="pointer-events-none absolute -top-6 -right-10 opacity-90"
+                  palette={HALO_PALETTES[p.slug]}
                 />
               ) : (
                 <div
@@ -254,14 +299,14 @@ export default function WorkDock() {
                   className="text-sm font-semibold leading-tight"
                   style={{
                     fontFamily: "var(--font-fraunces)",
-                    color: p.slug === "kali" ? "#E9ECCF" : "#2E372C",
+                    color: DARK_CARD_SLUGS.includes(p.slug) ? "#E9ECCF" : "#2E372C",
                   }}
                 >
                   {p.shortTitle}
                 </div>
                 <div
                   className="mt-0.5 text-[11px]"
-                  style={{ color: p.slug === "kali" ? "#A9B49C" : "#5C6555" }}
+                  style={{ color: DARK_CARD_SLUGS.includes(p.slug) ? "#A9B49C" : "#5C6555" }}
                 >
                   {p.role}
                 </div>
