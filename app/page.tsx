@@ -1,5 +1,6 @@
 import Hero from "@/components/Hero";
 import About from "@/components/About";
+import Hobbies from "@/components/Hobbies";
 import WorkDock from "@/components/WorkDock";
 import ContactForm from "@/components/ContactForm";
 import Footer from "@/components/Footer";
@@ -12,6 +13,7 @@ export default function Home() {
         <Hero />
         <WorkDock />
         <About />
+        <Hobbies />
         <ContactForm />
         <Footer />
       </main>
