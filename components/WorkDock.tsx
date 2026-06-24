@@ -11,12 +11,46 @@ import CodeCloud, { type CodeCloudPalette } from "./CodeCloud";
 // light text instead of the default dark text.
 const DARK_CARD_SLUGS = ["kali", "avicii", "bloomtasks"];
 
-// Subset of DARK_CARD_SLUGS that also gets the orbiting code-glyph halo
-// (bloomtasks just uses its own screenshot + overlay, no halo).
-const HALO_SLUGS = ["kali", "avicii"];
+// Subset of DARK_CARD_SLUGS that also gets the orbiting code-glyph halo.
+const HALO_SLUGS = ["kali", "avicii", "bloomtasks"];
 
 // Halo colors tuned to each dark card's own cover/background palette.
 const HALO_PALETTES: Record<string, CodeCloudPalette> = {
+  bloomtasks: {
+    ink: "#2D1E3A",
+    inkSoft: "#5C3E63",
+    glow: "rgba(233,174,184,0.32)",
+    orbitColor: "rgba(217,207,239,0.36)",
+    snippets: [
+      { text: "due: today", top: "14%", left: "8%", rotate: -6, size: 9 },
+      { text: "+ Add Task", top: "26%", left: "56%", rotate: 4, size: 8.5 },
+      { text: "sync()", top: "48%", left: "6%", rotate: -3, size: 8 },
+      { text: "Pomodoro 25:00", top: "64%", left: "22%", rotate: 5, size: 7.5 },
+      { text: "✓ ✓ ✓", top: "74%", left: "66%", rotate: -8, size: 11 },
+      { text: "import .xlsx", top: "6%", left: "44%", rotate: 3, size: 7.5 },
+    ],
+    rings: [
+      {
+        radius: 46,
+        duration: 14,
+        glyphs: [
+          { glyph: "brace", angle: 20, size: 16, color: "#E3AEB8" },
+          { glyph: "dot", angle: 160, size: 16, color: "#F0D6DB" },
+          { glyph: "slash", angle: 280, size: 14, color: "#D9CFEF" },
+        ],
+      },
+      {
+        radius: 78,
+        duration: 22,
+        reverse: true,
+        glyphs: [
+          { glyph: "angle", angle: 60, size: 18, color: "#D9CFEF" },
+          { glyph: "bracket", angle: 190, size: 16, color: "#E3AEB8" },
+          { glyph: "dot", angle: 320, size: 14, color: "#F0D6DB" },
+        ],
+      },
+    ],
+  },
   avicii: {
     ink: "#1B1438",
     inkSoft: "#3B2E72",
@@ -53,6 +87,54 @@ const HALO_PALETTES: Record<string, CodeCloudPalette> = {
     ],
   },
 };
+
+// Renders a Link for normal projects, or a plain non-interactive div for
+// projects still marked `comingSoon` so clicking them does nothing.
+function CardShell({
+  comingSoon,
+  href,
+  className,
+  style,
+  ariaLabel,
+  onMouseEnter,
+  onMouseLeave,
+  children,
+}: {
+  comingSoon?: boolean;
+  href: string;
+  className: string;
+  style?: React.CSSProperties;
+  ariaLabel: string;
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
+  children: React.ReactNode;
+}) {
+  if (comingSoon) {
+    return (
+      <div
+        className={className}
+        style={{ ...style, cursor: "default" }}
+        aria-label={ariaLabel}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        {children}
+      </div>
+    );
+  }
+  return (
+    <Link
+      href={href}
+      className={className}
+      style={style}
+      aria-label={ariaLabel}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+    >
+      {children}
+    </Link>
+  );
+}
 
 function getScale(hoveredIdx: number | null, thisIdx: number): number {
   if (hoveredIdx === null) return 1;
@@ -156,13 +238,16 @@ export default function WorkDock() {
         aria-label="Projects dock"
       >
         {PROJECTS.map((p, i) => (
-          <Link
+          <CardShell
             key={p.slug}
             href={`/work/${p.slug}`}
+            comingSoon={p.comingSoon}
             className="group relative block focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-300 rounded-xl"
             onMouseEnter={() => setHovered(i)}
             onMouseLeave={() => setHovered(null)}
-            aria-label={`View ${p.title} case study`}
+            ariaLabel={
+              p.comingSoon ? `${p.title}, coming soon` : `View ${p.title} case study`
+            }
           >
             <motion.div
               animate={{
@@ -246,12 +331,12 @@ export default function WorkDock() {
                     {p.oneLiner}
                   </div>
                   <div className="mt-2 text-[11px] font-semibold tracking-wide">
-                    Open case study →
+                    {p.comingSoon ? "Coming soon" : "Open case study →"}
                   </div>
                 </div>
               </div>
             </motion.div>
-          </Link>
+          </CardShell>
         ))}
       </div>
 
@@ -262,12 +347,17 @@ export default function WorkDock() {
         style={{ scrollbarWidth: "none" }}
       >
         {PROJECTS.map((p, i) => (
-          <Link
+          <CardShell
             key={p.slug}
             href={`/work/${p.slug}`}
+            comingSoon={p.comingSoon}
             className="snap-start shrink-0 block rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-rose-300"
             style={{ width: 148 }}
-            aria-label={`View ${p.title} case study`}
+            ariaLabel={
+              p.comingSoon ? `${p.title}, coming soon` : `View ${p.title} case study`
+            }
+            onMouseEnter={() => setHovered(i)}
+            onMouseLeave={() => setHovered(null)}
           >
             <div
               className="relative overflow-hidden rounded-[14px] active:opacity-80 transition-opacity"
@@ -316,7 +406,7 @@ export default function WorkDock() {
                 </div>
               </div>
             </div>
-          </Link>
+          </CardShell>
         ))}
       </div>
     </section>

@@ -25,6 +25,10 @@ export type Project = {
   team?: string[];
   externalUrl?: string;
   deepDive?: { title: string; paragraphs: string[] };
+  // True for projects still being built: the dock card shows but isn't
+  // clickable, and the hover label reads "Coming soon" instead of linking
+  // to a case study.
+  comingSoon?: boolean;
 };
 
 export const PROJECTS: Project[] = [
@@ -59,39 +63,50 @@ export const PROJECTS: Project[] = [
     tools: ["Python", "RAG", "LLMs", "Prompt Engineering", "Vector Search"],
   },
   {
-    slug: "bezero",
+    slug: "arbiter",
     num: "02",
-    title: "BeZero Carbon: Strategy",
-    shortTitle: "BeZero Carbon Strategy",
-    role: "Strategy Consultant, VSS",
+    title: "Arbiter: Price Arbitrage Engine",
+    shortTitle: "Arbiter",
+    role: "Full-Stack Data Engineer",
     year: "2026",
-    thumbBg: "linear-gradient(160deg,#E9ECCF,#C3C7A6)",
-    accent: "#C3C7A6",
+    comingSoon: true,
+    thumbBg:
+      "linear-gradient(160deg, #04101F 0%, #07283A 45%, #0E5C66 75%, #1FB6B6 100%)",
+    accent: "#2FD0C9",
     oneLiner:
-      "Decarbonization market mapping and a 30-slide go-to-market strategy.",
+      "An automated pricing-intelligence pipeline that turns algorithmic thresholding into real, recurring savings.",
     overview:
-      "With Venture Strategy Solutions I helped BeZero Carbon understand a fast-moving decarbonization market and translate that research into a concrete go-to-market plan its leadership could act on.",
+      "Arbiter is a data pipeline that scrapes a marketplace (flights, hardware, tickets) multiple times a day, cleans and stores the pricing history, then runs time-series analysis to tell you whether a current price is a statistical steal or simply overpriced. A Z-score outlier engine flags listings in the bottom percentile of historical pricing as a buy signal, while a regression model forecasts where the price is headed next, all surfaced through a real-time Slack/Discord alert bot.",
     goals: [
-      "Map the decarbonization landscape and key buyer segments",
-      "Define a sharp ideal-customer profile grounded in evidence",
-      "Deliver a board-ready go-to-market strategy",
+      "Continuously scrape and clean pricing data for a chosen marketplace without getting blocked",
+      "Detect seasonal and time-of-day pricing patterns using moving averages and EWMA smoothing",
+      "Flag statistically underpriced listings in real time using Z-score outlier detection",
+      "Forecast 7-day price trajectories with regression and alert on high-confidence buy windows",
     ],
     contributions: [
-      "Mapped decarbonization market workflows across carbon ratings, power trading, and grid forecasting via 12 primary discovery calls with professionals at Calyx Global and Sylvera",
-      "Synthesized 30+ primary and secondary research sources to build ICP frameworks across carbon analysts, ESG teams, and renewable energy underwriters",
-      "Delivered a 30-slide midterm strategy deck identifying 4 BeZero integration pathways and a phased GTM playbook across near-, mid-, and long-term expansion tracks",
+      "Architecting a headless Python scraper (Playwright) on a cron job that ingests item name, price, seller rating, and timestamp into a PostgreSQL/SQLite time-series store",
+      "Building moving-average and EWMA smoothing to isolate baseline pricing from day-of-week and time-of-day noise",
+      "Designing a Z-score outlier engine that flags listings in the bottom 2.5% of historical pricing as statistically underpriced buy signals",
+      "Shipping a regression-based 7-day price forecasting model and a Slack/Discord alert bot that reports confidence-scored buy recommendations in real time",
     ],
     results: [
-      "A validated ideal-customer profile with 3 high-priority segments",
-      "30-slide GTM roadmap adopted by leadership",
-      "Clear prioritization of target segments and expansion tracks",
+      "Currently in development",
+      "Targeting automated Z-score outlier detection with confidence-scored buy alerts",
+      "Designed to quantify total dollar savings (\"financial alpha\") generated over time",
+      "Will track false-positive rate and alert latency to continuously tune confidence thresholds",
     ],
     tools: [
-      "Market Research",
-      "ICP Frameworks",
-      "Customer Discovery",
-      "GTM Strategy",
-      "Keynote",
+      "Python",
+      "Playwright",
+      "BeautifulSoup",
+      "PostgreSQL",
+      "SQLite",
+      "Pandas",
+      "Z-Score Analysis",
+      "EWMA",
+      "Regression Forecasting",
+      "Slack/Discord Webhooks",
+      "Cron Automation",
     ],
   },
   {
@@ -131,7 +146,7 @@ export const PROJECTS: Project[] = [
     role: "Solo Full-Stack Engineer",
     year: "2026",
     thumbBg:
-      "linear-gradient(180deg, rgba(45,30,58,0.1) 0%, rgba(45,30,58,0.62) 100%), url('/work/bloomtasks/hero.jpg')",
+      "linear-gradient(180deg, rgba(45,30,58,0.1) 0%, rgba(45,30,58,0.62) 100%), url('/work/bloomtasks/tasks.jpg')",
     accent: "#D9CFEF",
     externalUrl: "https://bloomtasks.vercel.app",
     gallery: [
@@ -143,30 +158,30 @@ export const PROJECTS: Project[] = [
     oneLiner:
       "A full-stack personal productivity app with AI-powered scheduling, built for students who have a lot going on.",
     overview:
-      "Bloomtasks is a personal productivity web app built from scratch — a cozy, intuitive planner that replaces scattered Google Sheets and sticky notes with one unified space for tasks, calendar, focus sessions, and AI-optimized scheduling. It features a full authentication system, real-time Supabase database sync, a multi-view calendar, Pomodoro focus timer, daily task tracking, Excel/Google Calendar import, and a stochastic multi-agent scheduling engine that models cognitive energy as a dynamical system to automatically re-route your day before burnout hits.",
+      "Bloomtasks is a personal productivity web app built from scratch: a cozy, intuitive planner that replaces scattered Google Sheets and sticky notes with one unified space for tasks, calendar, focus sessions, and AI-optimized scheduling. It features a full authentication system, real-time Supabase database sync, a multi-view calendar, Pomodoro focus timer, daily task tracking, Excel/Google Calendar import, and a stochastic multi-agent scheduling engine that models cognitive energy as a dynamical system to automatically re-route your day before burnout hits.",
     quote: {
-      text: "Bloomtasks cut the time I spend reorganizing my week by 40% — the AI scheduler actually knows when I'm going to crash before I do.",
+      text: "Bloomtasks cut the time I spend reorganizing my week by 40%. The AI scheduler actually knows when I'm going to crash before I do.",
       author: "Nicole Wang, Founder",
     },
     goals: [
       "Replace a messy Excel to-do tracker with a beautiful, functional productivity OS built for real student life",
-      "Make task and calendar management genuinely intuitive — no learning curve, no ugly UX",
+      "Make task and calendar management genuinely intuitive, with no learning curve and no ugly UX",
       "Apply ML and stochastic modeling to turn a static planner into a dynamic, adaptive scheduling system",
       "Ship a production-ready full-stack app solo, end to end",
     ],
     contributions: [
-      "Built a full authentication and data layer from scratch — Supabase Auth with email confirmation and session persistence, row-level security across 5 normalized tables, and real-time optimistic UI sync",
-      "Designed an intuitive task and calendar system — a multi-view calendar, sortable card-based task list with custom pastel categories, and a dashboard with live stat cards and a one-click Quick Add widget",
+      "Built a full authentication and data layer from scratch: Supabase Auth with email confirmation and session persistence, row-level security across 5 normalized tables, and real-time optimistic UI sync",
+      "Designed an intuitive task and calendar system, including a multi-view calendar, sortable card-based task list with custom pastel categories, and a dashboard with live stat cards and a one-click Quick Add widget",
       "Engineered Excel and Google Calendar import pipelines with fuzzy column matching and keyword-based task/event classification, so existing planners migrate in seconds with zero manual reformatting",
-      "Shipped a stochastic AI scheduling engine — modeling cognitive energy as a dynamical system with multiplicative noise and a Random Forest layer — that predicts burnout and automatically re-routes the day before it hits",
+      "Shipped a stochastic AI scheduling engine that models cognitive energy as a dynamical system with multiplicative noise and a Random Forest layer, predicting burnout and automatically re-routing the day before it hits",
     ],
     deepDive: {
-      title: "The AI scheduler — how it works",
+      title: "The AI scheduler: how it works",
       paragraphs: [
         "Standard calendars assume you operate at 100% capacity all day. Bloomtasks doesn't.",
-        "The scheduling engine treats your time and energy as variables in a stochastic dynamical system — not fixed blocks. It applies principles from non-independent multiplicative noise modeling (EECS 127) to simulate how cognitive load accumulates across your scheduled tasks, predicting \"stability thresholds\" — the points at which sustained deep work tips into burnout.",
+        "The scheduling engine treats your time and energy as variables in a stochastic dynamical system, not fixed blocks. It applies principles from non-independent multiplicative noise modeling (EECS 127) to simulate how cognitive load accumulates across your scheduled tasks, predicting \"stability thresholds\": the points at which sustained deep work tips into burnout.",
         "When the model detects an approaching threshold, it automatically re-routes your schedule: splitting dense task blocks, inserting recovery buffers, and front-loading high-complexity work into predicted peak-energy windows (typically morning).",
-        "A Random Forest Regression layer learns from behavioral signals — sleep variance, skipped workouts, back-to-back meeting density — to predict how routine disruptions cascade into weekly productivity loss. It quantifies the cost of \"sleeping 30 minutes less\" in terms of estimated task completion time, not just vague advice.",
+        "A Random Forest Regression layer learns from behavioral signals like sleep variance, skipped workouts, and back-to-back meeting density to predict how routine disruptions cascade into weekly productivity loss. It quantifies the cost of \"sleeping 30 minutes less\" in terms of estimated task completion time, not just vague advice.",
         "Automated financial micro-tracking runs in parallel: Venmo API and Google Sheets API integration logs productivity-linked micro-expenses and splits automatically, so time spent on financial admin drops to zero.",
       ],
     },
@@ -206,11 +221,11 @@ export const PROJECTS: Project[] = [
       { value: "0", label: "Cross-user data leakage across 5 Supabase tables" },
     ],
     results: [
-      "Live at bloomtasks.vercel.app — personal daily driver replacing a Google Sheets tracker",
+      "Live at bloomtasks.vercel.app as my personal daily driver, replacing a Google Sheets tracker",
       "40% reduction in weekly planning time through AI-powered schedule re-routing",
       "3.2× focus session completion rate improvement via burnout prediction",
       "28% increase in on-time task completion with AI scheduler active",
-      "Full-stack solo build: auth, database, ML engine, import pipeline, and UI — shipped end to end",
+      "Full-stack solo build shipped end to end: auth, database, ML engine, import pipeline, and UI",
     ],
     tools: [
       "React 19",
@@ -268,22 +283,20 @@ export const PROJECTS: Project[] = [
     award: "Cal Hacks 2025 Project",
     externalUrl: "https://avicii-2tfh.onrender.com",
     oneLiner:
-      "An AI-powered DJ system that analyzes music structure, energy, and compatibility to automatically generate seamless, professional-grade mixes — no DJ equipment or training required.",
+      "An AI-powered DJ system that analyzes music structure, energy, and compatibility to automatically generate seamless, professional-grade mixes, no DJ equipment or training required.",
     overview:
-      "Avicii is an AI DJ engine that turns any playlist into a fully automated, professionally mixed DJ set. Instead of relying on expensive hardware or manual beatmatching skills, Avicii analyzes the structure of songs — including BPM, key, energy curves, vocal presence, and rhythmic patterns — and intelligently generates smooth transitions between tracks. The system uses audio separation (stems), music feature extraction, and transformer-based audio understanding (CLAP model) to determine which songs are compatible and exactly where transitions should occur, outputting a continuous mixed audio file with optimized crossfades, beat-aligned transitions, and energy-aware sequencing.",
+      "Avicii is an AI DJ engine that turns any playlist into a fully automated, professionally mixed DJ set. Instead of relying on expensive hardware or manual beatmatching skills, Avicii analyzes the structure of songs, including BPM, key, energy curves, vocal presence, and rhythmic patterns, and intelligently generates smooth transitions between tracks. The system uses audio separation (stems), music feature extraction, and transformer-based audio understanding (CLAP model) to determine which songs are compatible and exactly where transitions should occur, outputting a continuous mixed audio file with optimized crossfades, beat-aligned transitions, and energy-aware sequencing.",
     goals: [
-      "Make DJing accessible to anyone — no hardware, no training, no music theory required",
+      "Make DJing accessible to anyone, with no hardware, no training, and no music theory required",
       "Translate real DJ intuition (energy flow, beat matching, transitions) into algorithmic decision-making",
       "Automatically generate musically coherent mixes that feel intentional, not random",
-      "Build a full pipeline from raw audio → analysis → AI decision system → final mixed output",
+      "Build a full pipeline from raw audio to analysis to AI decision system to final mixed output",
     ],
     contributions: [
       "Built the full DJ intelligence pipeline, including BPM detection, key extraction, energy curve modeling, and structural audio segmentation using librosa",
       "Implemented stem separation using Demucs to isolate vocals, drums, and instrumentation for more precise mixing control",
-      "Designed the mixing decision engine that scores song compatibility and determines optimal transition points based on energy alignment and rhythmic structure",
-      "Integrated CLAP transformer model to understand semantic audio features (genre, mood, vocal density) and prevent incompatible or clashing transitions",
-      "Developed crossfade and beat-aligned transition logic that dynamically adjusts based on song energy and structure",
-      "Built a Flask-based web interface that connects backend audio processing with a simple user-facing upload → mix → download workflow",
+      "Designed the mixing decision engine, integrating a CLAP transformer model to score song compatibility and determine optimal transition points from energy alignment, rhythmic structure, and semantic audio features",
+      "Built a Flask-based web interface with dynamic crossfade and beat-aligned transition logic, connecting backend audio processing to a simple upload, mix, and download workflow",
     ],
     features: [
       {
