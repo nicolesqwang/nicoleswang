@@ -157,16 +157,6 @@ export default function WorkDock() {
                     }}
                   />
                 )}
-                {/* Number */}
-                <div
-                  className="absolute top-3 left-3 text-xl font-semibold"
-                  style={{
-                    fontFamily: "var(--font-fraunces)",
-                    color: p.slug === "kali" ? "rgba(233,236,207,0.7)" : "rgba(46,55,44,0.6)",
-                  }}
-                >
-                  {p.num}
-                </div>
                 {/* Bottom label */}
                 <div className="absolute bottom-3 left-3 right-3">
                   <div
@@ -259,15 +249,6 @@ export default function WorkDock() {
                   }}
                 />
               )}
-              <div
-                className="absolute top-3 left-3 text-xl font-semibold"
-                style={{
-                  fontFamily: "var(--font-fraunces)",
-                  color: p.slug === "kali" ? "rgba(233,236,207,0.7)" : "rgba(46,55,44,0.6)",
-                }}
-              >
-                {p.num}
-              </div>
               <div className="absolute bottom-3 left-3 right-3">
                 <div
                   className="text-sm font-semibold leading-tight"

@@ -274,7 +274,7 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
               className="mb-5 font-semibold"
               style={{ fontFamily: "var(--font-fraunces)", fontSize: "clamp(24px, 3vw, 34px)" }}
             >
-              What&apos;s wired
+              What&apos;s inside
             </h2>
             <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
               {p.features.map((f, i) => (
@@ -293,6 +293,35 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
                     {f.text}
                   </p>
                 </div>
+              ))}
+            </div>
+          </motion.div>
+        )}
+
+        {/* Deep dive — long-form explainer */}
+        {p.deepDive && (
+          <motion.div
+            className="mb-20"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.2 }}
+            variants={fadeUp}
+          >
+            <h2
+              className="mb-5 font-semibold"
+              style={{ fontFamily: "var(--font-fraunces)", fontSize: "clamp(24px, 3vw, 34px)" }}
+            >
+              {p.deepDive.title}
+            </h2>
+            <div className="flex max-w-[720px] flex-col gap-4">
+              {p.deepDive.paragraphs.map((para, i) => (
+                <p
+                  key={i}
+                  className="leading-relaxed"
+                  style={{ fontSize: 15.5, color: "#4A5446" }}
+                >
+                  {para}
+                </p>
               ))}
             </div>
           </motion.div>
