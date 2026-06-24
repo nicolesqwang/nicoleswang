@@ -12,7 +12,7 @@ import CodeCloud, { type CodeCloudPalette } from "./CodeCloud";
 const DARK_CARD_SLUGS = ["kali", "avicii", "bloomtasks", "flightnu", "sip"];
 
 // Subset of DARK_CARD_SLUGS that also gets the orbiting code-glyph halo.
-const HALO_SLUGS = ["kali", "avicii", "bloomtasks"];
+const HALO_SLUGS = ["kali", "avicii", "bloomtasks", "flightnu", "sip"];
 
 // Halo colors tuned to each dark card's own cover/background palette.
 const HALO_PALETTES: Record<string, CodeCloudPalette> = {
@@ -82,6 +82,76 @@ const HALO_PALETTES: Record<string, CodeCloudPalette> = {
           { glyph: "angle", angle: 60, size: 18, color: "#5EEAC4" },
           { glyph: "bracket", angle: 190, size: 16, color: "#C961D9" },
           { glyph: "dot", angle: 320, size: 14, color: "#8FC4E8" },
+        ],
+      },
+    ],
+  },
+  flightnu: {
+    ink: "#04101F",
+    inkSoft: "#0E5C66",
+    glow: "rgba(94,234,196,0.32)",
+    orbitColor: "rgba(94,234,196,0.34)",
+    snippets: [
+      { text: "z-score: -2.1", top: "14%", left: "8%", rotate: -6, size: 9 },
+      { text: "BUY NOW", top: "26%", left: "56%", rotate: 4, size: 8.5 },
+      { text: "SMA 7d", top: "48%", left: "6%", rotate: -3, size: 8 },
+      { text: "95% confidence", top: "64%", left: "20%", rotate: 5, size: 7.5 },
+      { text: "$262 → $219", top: "74%", left: "62%", rotate: -8, size: 9 },
+      { text: "APScheduler", top: "6%", left: "44%", rotate: 3, size: 7.5 },
+    ],
+    rings: [
+      {
+        radius: 46,
+        duration: 14,
+        glyphs: [
+          { glyph: "brace", angle: 20, size: 16, color: "#5EEAC4" },
+          { glyph: "dot", angle: 160, size: 16, color: "#C9F5E8" },
+          { glyph: "slash", angle: 280, size: 14, color: "#F5C56B" },
+        ],
+      },
+      {
+        radius: 78,
+        duration: 22,
+        reverse: true,
+        glyphs: [
+          { glyph: "angle", angle: 60, size: 18, color: "#F5C56B" },
+          { glyph: "bracket", angle: 190, size: 16, color: "#5EEAC4" },
+          { glyph: "dot", angle: 320, size: 14, color: "#C9F5E8" },
+        ],
+      },
+    ],
+  },
+  sip: {
+    ink: "#1A0D05",
+    inkSoft: "#3A2010",
+    glow: "rgba(226,155,92,0.32)",
+    orbitColor: "rgba(226,155,92,0.36)",
+    snippets: [
+      { text: "p < 0.0001", top: "14%", left: "8%", rotate: -6, size: 9 },
+      { text: "n = 42", top: "26%", left: "58%", rotate: 4, size: 8.5 },
+      { text: "Likert 5pt", top: "48%", left: "6%", rotate: -3, size: 8 },
+      { text: "UAV scan", top: "64%", left: "24%", rotate: 5, size: 7.5 },
+      { text: "2.15 → 4.31", top: "74%", left: "60%", rotate: -8, size: 9 },
+      { text: "t-test", top: "6%", left: "44%", rotate: 3, size: 8 },
+    ],
+    rings: [
+      {
+        radius: 46,
+        duration: 14,
+        glyphs: [
+          { glyph: "brace", angle: 20, size: 16, color: "#E29B5C" },
+          { glyph: "dot", angle: 160, size: 16, color: "#F5DCB8" },
+          { glyph: "slash", angle: 280, size: 14, color: "#8FC4E8" },
+        ],
+      },
+      {
+        radius: 78,
+        duration: 22,
+        reverse: true,
+        glyphs: [
+          { glyph: "angle", angle: 60, size: 18, color: "#8FC4E8" },
+          { glyph: "bracket", angle: 190, size: 16, color: "#E29B5C" },
+          { glyph: "dot", angle: 320, size: 14, color: "#F5DCB8" },
         ],
       },
     ],

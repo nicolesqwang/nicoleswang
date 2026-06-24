@@ -172,10 +172,6 @@ export const PROJECTS: Project[] = [
       "A full-stack personal productivity app with AI-powered scheduling, built for students who have a lot going on.",
     overview:
       "Bloomtasks is a personal productivity web app built from scratch: a cozy, intuitive planner that replaces scattered Google Sheets and sticky notes with one unified space for tasks, calendar, focus sessions, and AI-optimized scheduling. It features a full authentication system, real-time Supabase database sync, a multi-view calendar, Pomodoro focus timer, daily task tracking, Excel/Google Calendar import, and a stochastic multi-agent scheduling engine that models cognitive energy as a dynamical system to automatically re-route your day before burnout hits.",
-    quote: {
-      text: "Bloomtasks cut the time I spend reorganizing my week by 40%. The AI scheduler actually knows when I'm going to crash before I do.",
-      author: "Nicole Wang, Founder",
-    },
     goals: [
       "Replace a messy Excel to-do tracker with a beautiful, functional productivity OS built for real student life",
       "Make task and calendar management genuinely intuitive, with no learning curve and no ugly UX",
@@ -271,10 +267,6 @@ export const PROJECTS: Project[] = [
       "/work/wildfires/drone-data.jpg",
       "/work/wildfires/statistics.jpg",
     ],
-    quote: {
-      text: "Love, understand, conserve: our shared responsibility.",
-      author: "Nicole Wang",
-    },
     oneLiner:
       "A walkable VR experience that moved wildfire risk awareness from 2.2 to 4.3 on a 5-point scale in a controlled study (p < 0.0001).",
     overview:

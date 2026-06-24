@@ -6,6 +6,68 @@ import { motion } from "framer-motion";
 import type { Project } from "@/data/projects";
 import { fadeUp } from "./animations";
 import Logo from "./Logo";
+import { FernDoodle, FlowerDoodle, SeedlingDoodle, SucculentDoodle, VineDoodle } from "./Doodles";
+
+// Dashed/dotted circle accent, slowly orbiting in place. Reuses the same
+// spin keyframes as CodeCloud's orbit rings for a consistent feel.
+function RingAccent({
+  size,
+  duration,
+  reverse,
+  dashed = true,
+  color = "rgba(60,70,58,0.32)",
+  className,
+}: {
+  size: number;
+  duration: number;
+  reverse?: boolean;
+  dashed?: boolean;
+  color?: string;
+  className?: string;
+}) {
+  return (
+    <div
+      aria-hidden
+      className={`pointer-events-none ${reverse ? "orbit-ring-rev" : "orbit-ring"} ${className ?? ""}`}
+      style={{
+        width: size,
+        height: size,
+        borderRadius: "50%",
+        border: dashed ? `1.5px dashed ${color}` : `2px dotted ${color}`,
+        animationDuration: `${duration}s`,
+      }}
+    />
+  );
+}
+
+// Light grid texture, for laying over colored/gradient backgrounds.
+function GridTexture({ opacity = 0.07, size = 44, color = "#fff" }: { opacity?: number; size?: number; color?: string }) {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0"
+      style={{
+        backgroundImage: `linear-gradient(${color} 1px, transparent 1px), linear-gradient(90deg, ${color} 1px, transparent 1px)`,
+        backgroundSize: `${size}px ${size}px`,
+        opacity,
+      }}
+    />
+  );
+}
+
+function DotTexture({ opacity = 0.4, size = 24, color = "rgba(60,70,58,0.12)" }: { opacity?: number; size?: number; color?: string }) {
+  return (
+    <div
+      aria-hidden
+      className="pointer-events-none absolute inset-0"
+      style={{
+        backgroundImage: `radial-gradient(${color} 1px, transparent 1px)`,
+        backgroundSize: `${size}px ${size}px`,
+        opacity,
+      }}
+    />
+  );
+}
 
 export default function ProjectDetail({ project: p }: { project: Project }) {
   return (
@@ -35,14 +97,84 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
           background: `linear-gradient(165deg, ${p.accent} 0%, #FBFAF3 88%)`,
         }}
       >
+        {/* White grid */}
+        <GridTexture opacity={0.1} size={42} />
         {/* Dot texture */}
-        <div
-          className="pointer-events-none absolute inset-0 opacity-40"
-          style={{
-            backgroundImage: "radial-gradient(rgba(60,70,58,0.12) 1px, transparent 1px)",
-            backgroundSize: "24px 24px",
-          }}
+        <DotTexture />
+
+        {/* Dashed/dotted orbit rings */}
+        <RingAccent
+          size={230}
+          duration={42}
+          className="absolute -top-16 right-[10%] opacity-30"
         />
+        <RingAccent
+          size={130}
+          duration={28}
+          reverse
+          dashed={false}
+          color="rgba(60,70,58,0.3)"
+          className="absolute bottom-[-50px] left-[16%] opacity-25"
+        />
+        <RingAccent
+          size={70}
+          duration={20}
+          color="rgba(255,255,255,0.55)"
+          className="absolute top-[18%] left-[42%] opacity-40 hidden sm:block"
+        />
+
+        {/* Botanical accents */}
+        <div
+          className="pointer-events-none absolute top-[8%] left-[3%] opacity-40 animate-drift"
+          aria-hidden
+        >
+          <FernDoodle size={84} color="#5C6555" />
+        </div>
+        <div
+          className="pointer-events-none absolute bottom-[6%] right-[6%] opacity-40 animate-driftslow"
+          style={{ animationDelay: "0.6s" }}
+          aria-hidden
+        >
+          <VineDoodle size={92} color="#7E8A6E" />
+        </div>
+        <div
+          className="pointer-events-none absolute top-[58%] right-[18%] opacity-35 animate-drift hidden sm:block"
+          style={{ animationDelay: "1.1s" }}
+          aria-hidden
+        >
+          <SeedlingDoodle size={54} color="#7E8A6E" />
+        </div>
+        <div
+          className="pointer-events-none absolute bottom-[10%] left-[22%] opacity-30 animate-driftslow hidden sm:block"
+          style={{ animationDelay: "0.3s" }}
+          aria-hidden
+        >
+          <SucculentDoodle size={48} />
+        </div>
+        <div
+          className="pointer-events-none absolute top-[10%] right-[28%] opacity-30 animate-drift hidden md:block"
+          style={{ animationDelay: "1.6s" }}
+          aria-hidden
+        >
+          <FlowerDoodle size={40} color="#E3AEB8" />
+        </div>
+
+        {/* Sparkle accents */}
+        <span
+          className="pointer-events-none absolute top-[24%] left-[48%] text-xl animate-twinkle"
+          style={{ color: "#fff", opacity: 0.6 }}
+          aria-hidden
+        >
+          ✦
+        </span>
+        <span
+          className="pointer-events-none absolute bottom-[26%] right-[34%] text-base animate-twinkle"
+          style={{ color: "#3C463A", opacity: 0.3, animationDelay: "0.8s" }}
+          aria-hidden
+        >
+          ✦
+        </span>
+
         <div className="relative mx-auto max-w-[1080px]">
           <div
             className="font-mono text-xs uppercase tracking-[2px]"
@@ -195,11 +327,25 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
         >
           {/* Goals */}
           <div
-            className="rounded-[18px] p-8"
+            className="relative overflow-hidden rounded-[18px] p-8"
             style={{ background: p.accent }}
           >
+            <GridTexture opacity={0.12} size={30} />
+            <DotTexture opacity={0.5} size={18} color="rgba(60,70,58,0.1)" />
+            <RingAccent
+              size={110}
+              duration={32}
+              reverse
+              className="absolute -bottom-10 -right-8 opacity-25"
+            />
+            <div
+              className="pointer-events-none absolute top-3 right-3 opacity-30"
+              aria-hidden
+            >
+              <SeedlingDoodle size={40} color="#3C463A" />
+            </div>
             <h2
-              className="mb-5 font-semibold"
+              className="relative mb-5 font-semibold"
               style={{
                 fontFamily: "var(--font-fraunces)",
                 fontSize: "clamp(24px, 3vw, 34px)",
@@ -207,7 +353,7 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
             >
               The goals
             </h2>
-            <ul className="flex flex-col gap-4">
+            <ul className="relative flex flex-col gap-4">
               {p.goals.map((g, i) => (
                 <li
                   key={i}
@@ -320,20 +466,33 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
         {/* Live impact stats */}
         {p.liveStats && (
           <motion.div
-            className="mb-20 rounded-[20px] p-8 sm:p-12"
+            className="relative mb-20 overflow-hidden rounded-[20px] p-8 sm:p-12"
             style={{ background: "#EEF1DE" }}
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             variants={fadeUp}
           >
+            <DotTexture opacity={0.5} size={20} />
+            <RingAccent
+              size={150}
+              duration={36}
+              color="rgba(60,70,58,0.22)"
+              className="absolute -top-12 -right-12 opacity-30 hidden sm:block"
+            />
+            <div
+              className="pointer-events-none absolute bottom-2 right-4 opacity-25 hidden sm:block"
+              aria-hidden
+            >
+              <FernDoodle size={56} color="#7E8A6E" />
+            </div>
             <h2
-              className="mb-7 font-semibold"
+              className="relative mb-7 font-semibold"
               style={{ fontFamily: "var(--font-fraunces)", fontSize: "clamp(24px, 3vw, 34px)" }}
             >
               Live impact
             </h2>
-            <div className="grid grid-cols-2 gap-6 sm:grid-cols-4">
+            <div className="relative grid grid-cols-2 gap-6 sm:grid-cols-4">
               {p.liveStats.map((s, i) => (
                 <div key={i}>
                   <div
@@ -396,6 +555,20 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
           viewport={{ once: true, amount: 0.2 }}
           variants={fadeUp}
         >
+          <GridTexture opacity={0.06} size={36} />
+          <RingAccent
+            size={170}
+            duration={38}
+            reverse
+            color="rgba(233,236,207,0.18)"
+            className="absolute -bottom-16 -left-14 opacity-50 hidden sm:block"
+          />
+          <div
+            className="pointer-events-none absolute bottom-4 left-6 opacity-25 hidden sm:block"
+            aria-hidden
+          >
+            <VineDoodle size={60} color="#A9B49C" />
+          </div>
           <span
             className="absolute top-5 right-7 text-3xl opacity-70"
             style={{ color: p.accent }}
@@ -404,12 +577,12 @@ export default function ProjectDetail({ project: p }: { project: Project }) {
             ✦
           </span>
           <h2
-            className="mb-7 font-semibold"
+            className="relative mb-7 font-semibold"
             style={{ fontFamily: "var(--font-fraunces)", fontSize: "clamp(26px, 3.4vw, 40px)" }}
           >
             The results
           </h2>
-          <div className="grid grid-cols-1 gap-8 sm:grid-cols-3">
+          <div className="relative grid grid-cols-1 gap-8 sm:grid-cols-3">
             {p.results.map((r, i) => (
               <div key={i} className="flex flex-col gap-3">
                 <span className="text-2xl" style={{ color: p.accent }}>→</span>
