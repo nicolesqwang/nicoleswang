@@ -7,11 +7,6 @@ export type Hobby = {
   blurb: string;
   notable: string;
   tools: string[];
-  // Photobooth strip shape: "vertical" stacks the two photos top/bottom,
-  // "horizontal" lays them side by side (wider, spans 2 grid columns).
-  layout?: "vertical" | "horizontal";
-  // Slightly taller strip variant for visual variety in the wall layout.
-  tall?: boolean;
 };
 
 export const HOBBIES: Hobby[] = [
@@ -26,7 +21,6 @@ export const HOBBIES: Hobby[] = [
     notable:
       "Still very much a hobbyist. Current goal is finishing a full series instead of starting a new canvas every time I get distracted.",
     tools: ["Oil paint", "Canvas panels", "Palette knife", "Linseed oil"],
-    tall: true,
   },
   {
     slug: "digital-painting",
@@ -61,7 +55,6 @@ export const HOBBIES: Hobby[] = [
       "Mostly film, mostly people. I like the forced patience of not knowing how a shot turned out until weeks later.",
     notable: "Slowly building toward shooting a friend's event start to finish on film.",
     tools: ["35mm film camera", "Digital mirrorless", "Lightroom"],
-    layout: "horizontal",
   },
   {
     slug: "dance",
@@ -73,7 +66,6 @@ export const HOBBIES: Hobby[] = [
       "Grew up doing fan dance and have stuck with different forms of performance dance since. It's the most reliably joyful hour of my week.",
     notable: "Performed in a handful of showcases. Always down to learn a new style.",
     tools: ["Fan dance", "K-pop choreo", "Freestyle"],
-    tall: true,
   },
   {
     slug: "crochet",
@@ -87,15 +79,15 @@ export const HOBBIES: Hobby[] = [
     tools: ["Crochet hook", "Yarn", "Stitch markers"],
   },
   {
-    slug: "volleyball",
-    title: "Volleyball",
-    bg: "#E9ECCF",
-    accent: "#A9B97A",
-    since: "Since high school",
+    slug: "new-eats",
+    title: "Trying New Eats",
+    bg: "#ECE9BE",
+    accent: "#D8C27A",
+    since: "Always",
     blurb:
-      "Pickup games whenever I can find a court and enough people. Mostly outside hitter, mostly there for the running around.",
-    notable: "Still chasing a consistent serve.",
-    tools: ["Indoor volleyball", "Beach volleyball", "Pickup leagues"],
+      "Always hunting for the next must-try restaurant or hole-in-the-wall spot. Ramen, dumplings, whatever has a line out the door, I'm probably already on the waitlist.",
+    notable: "Keeping a running list of spots to try next. It never gets shorter.",
+    tools: ["Yelp & Google Maps lists", "Waitlist apps", "An appetite for risk"],
   },
   {
     slug: "travel",
@@ -107,6 +99,5 @@ export const HOBBIES: Hobby[] = [
       "Always planning the next trip before finishing the photos from the last one. Drawn to anywhere with good light and good food.",
     notable: "Working through a loose list of national parks and night markets.",
     tools: ["Film camera", "A notebook that never gets enough use", "Google Maps lists"],
-    layout: "horizontal",
   },
 ];

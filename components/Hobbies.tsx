@@ -7,15 +7,22 @@ import { HOBBIES, type Hobby } from "@/data/hobbies";
 import { GridTexture, DotTexture, RingAccent } from "./patterns";
 import { FlowerDoodle, SeedlingDoodle } from "./Doodles";
 
-const ROTATIONS = [-3, 2, -2, 3, -1.5, 2.5, -2.5, 1.5];
+// All cards are the same size; "different heights" comes from offsetting
+// whole columns (not individual cards), so the gap between any two
+// neighboring cards, above, below, left, or right, stays the same.
+const GAP = 16; // px, matches gap-4
+const DESKTOP_COLUMNS = 4;
+const DESKTOP_OFFSETS = [0, 56, 20, 72];
+const MOBILE_COLUMNS = 2;
+const MOBILE_OFFSETS = [0, 40];
 
-function PlaceholderPhoto({
-  accent,
-  className,
-}: {
-  accent: string;
-  className?: string;
-}) {
+function splitIntoColumns(count: number): Hobby[][] {
+  const cols: Hobby[][] = Array.from({ length: count }, () => []);
+  HOBBIES.forEach((h, i) => cols[i % count].push(h));
+  return cols;
+}
+
+function PlaceholderPhoto({ accent, className }: { accent: string; className?: string }) {
   return (
     <div
       className={`relative ${className ?? ""}`}
@@ -33,38 +40,83 @@ function PlaceholderPhoto({
   );
 }
 
-function PhotoStrip({ hobby }: { hobby: Hobby }) {
-  const isHorizontal = hobby.layout === "horizontal";
+function HobbyCard({
+  hobby,
+  hovered,
+  onHover,
+  onLeave,
+  onOpen,
+}: {
+  hobby: Hobby;
+  hovered: boolean;
+  onHover: () => void;
+  onLeave: () => void;
+  onOpen: () => void;
+}) {
+  const previewText =
+    hobby.blurb.length > 90 ? `${hobby.blurb.slice(0, 90)}…` : hobby.blurb;
+
   return (
-    <div
-      className="w-full overflow-hidden rounded-[7px] border-[3px]"
-      style={{
-        borderColor: "#fff",
-        background: hobby.bg,
-        boxShadow: "0 14px 26px -16px rgba(60,70,58,0.45)",
-      }}
+    <button
+      type="button"
+      onClick={onOpen}
+      onMouseEnter={onHover}
+      onMouseLeave={onLeave}
+      className="focus:outline-none"
     >
-      {isHorizontal ? (
-        <div className="flex h-[110px]">
-          <PlaceholderPhoto accent={hobby.accent} className="h-full w-1/2" />
-          <div style={{ width: 3, background: "#fff" }} />
-          <PlaceholderPhoto accent={hobby.accent} className="h-full w-1/2" />
+      <div
+        className="rounded-[16px] border p-3 transition-shadow hover:shadow-lg"
+        style={{
+          background: hobby.bg,
+          borderColor: "rgba(60,70,58,0.16)",
+          boxShadow: "0 10px 22px -16px rgba(60,70,58,0.4)",
+        }}
+      >
+        <div className="relative flex w-[172px] flex-col gap-1.5" style={{ height: 240 }}>
+          <PlaceholderPhoto accent={hobby.accent} className="w-full flex-1 rounded-[6px]" />
+          <PlaceholderPhoto accent={hobby.accent} className="w-full flex-1 rounded-[6px]" />
+          <AnimatePresence>
+            {hovered && (
+              <motion.div
+                className="absolute inset-0 flex flex-col justify-center overflow-hidden rounded-[6px] p-3"
+                style={{ background: hobby.bg, border: "1px solid rgba(60,70,58,0.18)" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.15 }}
+              >
+                <div
+                  className="text-[10px] font-semibold uppercase tracking-wide"
+                  style={{ color: "#5C6555" }}
+                >
+                  {hobby.since}
+                </div>
+                <p className="mt-1 text-[11px] leading-snug" style={{ color: "#3C463A" }}>
+                  {previewText}
+                </p>
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
-      ) : (
-        <div className="flex flex-col" style={{ height: hobby.tall ? 260 : 210 }}>
-          <PlaceholderPhoto accent={hobby.accent} className="w-full flex-1" />
-          <div style={{ height: 3, background: "#fff" }} />
-          <PlaceholderPhoto accent={hobby.accent} className="w-full flex-1" />
+        <div className="mt-2.5 text-center">
+          <div
+            className="text-sm font-semibold leading-tight"
+            style={{ fontFamily: "var(--font-fraunces)", color: "#2E372C" }}
+          >
+            {hobby.title}
+          </div>
+          <div className="mt-0.5 text-[10.5px]" style={{ color: "#6B7363" }}>
+            click for more →
+          </div>
         </div>
-      )}
-    </div>
+      </div>
+    </button>
   );
 }
 
 export default function Hobbies() {
   const [hoveredSlug, setHoveredSlug] = useState<string | null>(null);
   const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const hovered = HOBBIES.find((h) => h.slug === hoveredSlug) ?? null;
   const active = HOBBIES.find((h) => h.slug === openSlug) ?? null;
 
   useEffect(() => {
@@ -113,7 +165,7 @@ export default function Hobbies() {
       </div>
 
       <motion.div
-        className="relative mx-auto mb-14 max-w-[720px] text-center"
+        className="relative mx-auto mb-12 max-w-[720px] text-center"
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.3 }}
@@ -142,85 +194,62 @@ export default function Hobbies() {
         </p>
       </motion.div>
 
+      {/* Mobile: 2 staggered columns */}
       <motion.div
-        className="relative mx-auto grid max-w-[1080px] grid-cols-2 gap-x-6 gap-y-16 sm:grid-cols-4"
+        className="relative mx-auto flex max-w-[1000px] justify-center sm:hidden"
+        style={{ gap: GAP }}
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, amount: 0.1 }}
         variants={fadeUp}
-        style={{ alignItems: "end" }}
       >
-        {HOBBIES.map((h, i) => {
-          const isHorizontal = h.layout === "horizontal";
-          return (
-            <div
-              key={h.slug}
-              className={`relative ${isHorizontal ? "col-span-2" : ""}`}
-              style={{ zIndex: hoveredSlug === h.slug ? 30 : 1 }}
-              onMouseEnter={() => setHoveredSlug(h.slug)}
-              onMouseLeave={() => setHoveredSlug(null)}
-            >
-              <motion.button
-                type="button"
-                onClick={() => setOpenSlug(h.slug)}
-                className={`group mx-auto flex flex-col items-center focus:outline-none ${
-                  isHorizontal ? "w-full max-w-[260px]" : "w-full max-w-[140px]"
-                }`}
-                initial={{ rotate: ROTATIONS[i % ROTATIONS.length] }}
-                whileHover={{ rotate: 0, scale: 1.05, y: -4 }}
-                transition={{ type: "spring", stiffness: 260, damping: 18 }}
-                aria-label={`View ${h.title}`}
-              >
-                <PhotoStrip hobby={h} />
-                <div className="mt-3 text-center">
-                  <div
-                    className="text-sm font-semibold leading-tight"
-                    style={{ fontFamily: "var(--font-fraunces)", color: "#2E372C" }}
-                  >
-                    {h.title}
-                  </div>
-                  <div
-                    className="mt-0.5 text-[10.5px] opacity-0 transition-opacity group-hover:opacity-70"
-                    style={{ color: "#6B7363" }}
-                  >
-                    click for more →
-                  </div>
-                </div>
-              </motion.button>
+        {splitIntoColumns(MOBILE_COLUMNS).map((col, ci) => (
+          <div
+            key={ci}
+            className="flex flex-col"
+            style={{ gap: GAP, marginTop: MOBILE_OFFSETS[ci % MOBILE_OFFSETS.length] }}
+          >
+            {col.map((h) => (
+              <HobbyCard
+                key={h.slug}
+                hobby={h}
+                hovered={hoveredSlug === h.slug}
+                onHover={() => setHoveredSlug(h.slug)}
+                onLeave={() => setHoveredSlug(null)}
+                onOpen={() => setOpenSlug(h.slug)}
+              />
+            ))}
+          </div>
+        ))}
+      </motion.div>
 
-              {/* Hover mini preview */}
-              <AnimatePresence>
-                {hovered?.slug === h.slug && openSlug !== h.slug && (
-                  <motion.div
-                    className="absolute left-1/2 top-full z-30 mt-2 w-56 -translate-x-1/2 rounded-[14px] p-4 text-left"
-                    style={{
-                      background: h.bg,
-                      border: "1px solid rgba(60,70,58,0.14)",
-                      boxShadow: "0 22px 40px -20px rgba(60,70,58,0.45)",
-                    }}
-                    initial={{ opacity: 0, y: -6, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -6, scale: 0.96 }}
-                    transition={{ duration: 0.15 }}
-                  >
-                    <div
-                      className="text-xs font-semibold"
-                      style={{ fontFamily: "var(--font-fraunces)", color: "#2E372C" }}
-                    >
-                      {h.title} · {h.since}
-                    </div>
-                    <p
-                      className="mt-1.5 text-xs leading-relaxed"
-                      style={{ color: "#3C463A" }}
-                    >
-                      {h.blurb.length > 100 ? `${h.blurb.slice(0, 100)}…` : h.blurb}
-                    </p>
-                  </motion.div>
-                )}
-              </AnimatePresence>
-            </div>
-          );
-        })}
+      {/* Desktop: 4 staggered columns */}
+      <motion.div
+        className="relative mx-auto hidden max-w-[1000px] justify-center sm:flex"
+        style={{ gap: GAP }}
+        initial="hidden"
+        whileInView="visible"
+        viewport={{ once: true, amount: 0.1 }}
+        variants={fadeUp}
+      >
+        {splitIntoColumns(DESKTOP_COLUMNS).map((col, ci) => (
+          <div
+            key={ci}
+            className="flex flex-col"
+            style={{ gap: GAP, marginTop: DESKTOP_OFFSETS[ci % DESKTOP_OFFSETS.length] }}
+          >
+            {col.map((h) => (
+              <HobbyCard
+                key={h.slug}
+                hobby={h}
+                hovered={hoveredSlug === h.slug}
+                onHover={() => setHoveredSlug(h.slug)}
+                onLeave={() => setHoveredSlug(null)}
+                onOpen={() => setOpenSlug(h.slug)}
+              />
+            ))}
+          </div>
+        ))}
       </motion.div>
 
       {/* Full popup */}
@@ -304,10 +333,7 @@ export default function Hobbies() {
                   {active.blurb}
                 </p>
 
-                <div
-                  style={{ borderTop: "1.5px dashed rgba(60,70,58,0.28)" }}
-                  className="my-6"
-                />
+                <div style={{ borderTop: "1.5px dashed rgba(60,70,58,0.28)" }} className="my-6" />
 
                 <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
                   <div>
@@ -333,10 +359,7 @@ export default function Hobbies() {
                         <span
                           key={t}
                           className="rounded-full px-3 py-1 text-xs font-semibold"
-                          style={{
-                            background: "rgba(255,255,255,0.7)",
-                            color: "#3C463A",
-                          }}
+                          style={{ background: "rgba(255,255,255,0.7)", color: "#3C463A" }}
                         >
                           {t}
                         </span>
@@ -345,10 +368,7 @@ export default function Hobbies() {
                   </div>
                 </div>
 
-                <div
-                  style={{ borderTop: "1.5px dashed rgba(60,70,58,0.28)" }}
-                  className="my-6"
-                />
+                <div style={{ borderTop: "1.5px dashed rgba(60,70,58,0.28)" }} className="my-6" />
 
                 <span
                   className="text-xs font-semibold uppercase tracking-wide"
